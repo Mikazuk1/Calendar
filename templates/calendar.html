@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script> 
+    <script src='fullcalendar/dist/index.global.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        $('#calendar').fullCalendar({
+          selectable: true,
+          selectHelper: true,
+          select: function(){
+            $('#myModal').modal('toggle');
+          },
+          header:{
+            left:'month, agendaWeek, agendaDay, list',
+            center:'title',
+            right:'prev, today, next'
+          },
+          buttonText:{
+            today:'Today',
+            month:'Month',
+            week:'Week',
+            day:'Day',
+            list:'List'
+          },
+          events:[
+          {% for event in events%}
+          {
+           title:'{{event.title}}',
+           start:'{{event.date}}',
+          },
+          {% endfor %}
+          ]
+        });        
+   });
+   </script>
+
+  </head>
+<body>
+    <h4><a href="home">Back</a></h4>
+    <div class="container">
+     <div id="calendar"></div>
+    </div>
+    <br>
+  </body>
+</html>
+
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Create Event</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <input type="text" class="form-control">
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
