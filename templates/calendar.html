@@ -15,9 +15,6 @@
         $('#calendar').fullCalendar({
           selectable: true,
           selectHelper: true,
-          select: function(){
-            $('#myModal').modal('toggle');
-          },
           header:{
             left:'month, agendaWeek, agendaDay, list',
             center:'title',
@@ -51,26 +48,3 @@
     <br>
   </body>
 </html>
-
-<div class="modal" id="myModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-    
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Create Event</h4>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      
-      <!-- Modal body -->
-      <div class="modal-body">
-        <input type="text" class="form-control">
-      </div>
-      
-      <!-- Modal footer -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
