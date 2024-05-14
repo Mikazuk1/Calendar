@@ -4,13 +4,26 @@
   <div class="table-responsive">  
   <h3 align="center">Create Event</h3><br/>
   <div class="box">
-   <form method="post" >  
+   <form method="post" > 
+    {{form.hidden_tag()}} 
      <div class="form-group">
      <label for="title">Enter Title of the Event</label>
      <input type="text" name="title" id="title" placeholder="Enter Title" required 
      data-parsley-type="title" data-parsley-trigg
      er="keyup" class="form-control"/>
     </div>
+    <div class="form-group">
+      <label for="title">Applicant Name</label>
+      <input type="text" name="title" id="title" placeholder="Applicant Name" required 
+      data-parsley-type="title" data-parsley-trigg
+      er="keyup" class="form-control"/>
+     </div>
+     <div class="form-group">
+      <label for="title">Facility Requested</label>
+      <input type="text" name="title" id="title" placeholder="Facility Requested" required 
+      data-parsley-type="title" data-parsley-trigg
+      er="keyup" class="form-control"/>
+     </div>
     <div class="form-group">
      <label for="date">Start Date</label>
      <input type="date" name="start_date" id="start_date" required 
@@ -26,7 +39,6 @@
     <div class="form-group">
      <input type="submit" id="save-event" name="save-event" value="Save Event" class="btn btn-success" />
      </div>
-     <p class="error"></p>
    </form>
    </div>
  </div>  
