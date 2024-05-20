@@ -30,8 +30,9 @@
           events:[
           {% for event in events%}
           {
-           title:'{{event.title}}',
-           start:'{{event.date}}',
+           title:'{{event.event_name}}',
+           start:'{{event.startdate}}',
+           end:'{{event.enddate}}',
           },
           {% endfor %}
           ]

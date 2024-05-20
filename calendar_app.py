@@ -1,56 +1,53 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import LoginForm, AddEvent
+from flask import Flask, render_template, url_for, flash, redirect, request
 from flask_sqlalchemy import SQLAlchemy
-
+from forms import LoginForm, AddEvent
+from datetime import datetime
 
 app = Flask(__name__)
-
-app.config['SECRET_KEY']='6a8ed0da5ab41df512731f11f479b01d'
+app.config['SECRET_KEY'] = 'your_secret_key_here'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:lolislife23@localhost/calendar_db'
-db =SQLAlchemy(app)
+db = SQLAlchemy(app)
 
-class Event(db.Model):
-    id = db.Column(db.Integer,primary_key=True)
-    applicant = db.Column(db.String(50),unique=True,nullable=False)
-    event = db.Column(db.String(50),unique=True,nullable=False)
-    facility = db.Column(db.String(50),unique=True,nullable=False)
-    # starttime = db.Column(db.DateTime,nullable=False)
-    # endtime = db.Column(db.DateTime,nullable=False)
-    startdate = db.Column(db.DateTime, nullable=False)
-    enddate = db.Column(db.DateTime, nullable=False)
+class Sched(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    applicant = db.Column(db.String(50),unique=False, nullable=False)
+    event_name = db.Column(db.String(50),unique=False, nullable=False)
+    facility = db.Column(db.String(50),unique=False, nullable=False)
+    startdate = db.Column(db.String(50), nullable=False)
+    enddate = db.Column(db.String(50), nullable=False)
+    
     def __repr__(self):
-        return f"Applicant '{self.applicant}', Event'{self.title}', Facility'{self.facility}', Date'{self.date}'"
-    
-    
-
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
-        if form.email.data == 'admin@cjc.com' and form.password.data == 'password':
-            flash('You have been logged in!', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Login Unsuccessful. Please check username and password', 'danger')
-    return render_template('login.html', title='Login', form=form)
+        return f'<Sched {self.id}>'
 
 @app.route("/addevent", methods=['GET','POST'])
 def addevent():
     form = AddEvent()
-    return render_template("addevent.html",title="Calendar Schedules",form=form)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            new_sched = Sched(
+                applicant=form.applicant.data,
+                event_name=form.event_name.data,
+                facility=form.facility.data,
+                startdate=form.startdate.data,
+                enddate=form.enddate.data
+            )
+            db.session.add(new_sched)
+            db.session.commit()
+            flash("Schedule Created", "success")
+            return redirect(url_for('home'))
+    return render_template("addevent.html", title="Create Event", form=form)
+
+@app.route("/calendar")
+def calendar():
+    events = Sched.query.all()
+    return render_template("calendar.html", events = events)
+
 
 @app.route("/")
 @app.route("/home")
 def home():
-    events = Event.query.all()
-    return render_template('home.html',events=events)
-
-@app.route("/calendar")
-def calendar():
-    events = Event.query.all()
-    return render_template("calendar.html", events = events)
-
-
+    events = Sched.query.all()
+    return render_template('home.html', title='Home', events=events)
 
 if __name__ == '__main__':
     app.run(debug=True)

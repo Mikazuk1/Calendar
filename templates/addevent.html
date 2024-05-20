@@ -1,46 +1,84 @@
-{% extends "layout.html" %}
-{% block content %}
-<div class="container">  
-  <div class="table-responsive">  
-  <h3 align="center">Create Event</h3><br/>
-  <div class="box">
-   <form method="post" > 
-    {{form.hidden_tag()}} 
-     <div class="form-group">
-     <label for="title">Enter Title of the Event</label>
-     <input type="text" name="title" id="title" placeholder="Enter Title" required 
-     data-parsley-type="title" data-parsley-trigg
-     er="keyup" class="form-control"/>
-    </div>
-    <div class="form-group">
-      <label for="title">Applicant Name</label>
-      <input type="text" name="title" id="title" placeholder="Applicant Name" required 
-      data-parsley-type="title" data-parsley-trigg
-      er="keyup" class="form-control"/>
-     </div>
-     <div class="form-group">
-      <label for="title">Facility Requested</label>
-      <input type="text" name="title" id="title" placeholder="Facility Requested" required 
-      data-parsley-type="title" data-parsley-trigg
-      er="keyup" class="form-control"/>
-     </div>
-    <div class="form-group">
-     <label for="date">Start Date</label>
-     <input type="date" name="start_date" id="start_date" required 
-     data-parsley-type="date" data-parsley-trigg
-     er="keyup" class="form-control"/>
-    </div>
-    <div class="form-group">
-     <label for="date">End Date</label>
-     <input type="date" name="end_date" id="end_date" required 
-     data-parsley-type="date" data-parsley-trigg
-     er="keyup" class="form-control"/>
-    </div>
-    <div class="form-group">
-     <input type="submit" id="save-event" name="save-event" value="Save Event" class="btn btn-success" />
-     </div>
-   </form>
-   </div>
- </div>  
-</div>
-{% endblock content %}
+      {% extends "layout.html" %}
+      {% block content %}
+      <div class="container">  
+        <div class="table-responsive">  
+        <h3 align="center">Create Event</h3><br/>
+        <div class="box">
+        <form method="POST" action="/addevent"> 
+          {{form.hidden_tag()}} 
+          <div class="form-group">
+            {{ form.applicant.label(class="form-control-label") }}
+            {% if form.applicant.errors %}
+                {{ form.applicant(class="form-control form-control-lg is-invalid",required="required") }}
+                <div class="invalid-feedback">
+                    {% for error in form.applicant.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.applicant(class="form-control form-control-lg",required="required") }}
+            {% endif %}
+        </div>
+          <div class="form-group">
+            {{ form.event_name.label(class="form-control-label") }}
+            {% if form.event_name.errors %}
+                {{ form.event_name(class="form-control form-control-lg is-invalid",required="required") }}
+                <div class="invalid-feedback">
+                    {% for error in form.event_name.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.event_name(class="form-control form-control-lg",required="required") }}
+            {% endif %}
+        </div>
+      <div class="form-group">
+        {{ form.facility.label(class="form-control-label") }}
+        {% if form.facility.errors %}
+            {{ form.facility(class="form-control form-control-lg is-invalid",required="required") }}
+            <div class="invalid-feedback">
+                {% for error in form.facility.errors %}
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            {{ form.facility(class="form-control form-control-lg",required="required") }}
+        {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.startdate.label(class="form-control-label") }}
+          {% if form.startdate.errors %}
+              {{ form.startdate(class="form-control form-control-lg is-invalid",type="datetime-local") }}
+              <div class="invalid-feedback">
+                  {% for error in form.startdate.errors %}
+                      <span>{{ error }}</span>
+                  {% endfor %}
+              </div>
+          {% else %}
+              {{ form.startdate(class="form-control form-control-lg",type="datetime-local") }}
+          {% endif %}
+          </div>
+          <div class="form-group">
+            {{ form.enddate.label(class="form-control-label") }}
+            {% if form.enddate.errors %}
+                {{ form.enddate(class="form-control form-control-lg is-invalid",type="datetime-local") }}
+                <div class="invalid-feedback">
+                    {% for error in form.enddate.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.enddate(class="form-control form-control-lg",type="datetime-local") }}
+            {% endif %}
+            </div>
+    
+
+
+      <div class="form-group">
+        {{ form.submit(class="btn btn-success") }}
+      </div>
+        </form>
+        </div>
+      </div>  
+      </div>
+      {% endblock content %}
