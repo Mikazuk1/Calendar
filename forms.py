@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateTimeLocalField
-from wtforms.validators import DataRequired, Email, ValidationError
-from datetime import datetime
+from wtforms.validators import DataRequired, Email
+
 
 # class ValidDateTime(object):
 #     def __init__(self, message=None):
@@ -26,8 +26,14 @@ class AddEvent(FlaskForm):
     submit = SubmitField('Submit')
 
 class LoginForm(FlaskForm):
-    email = StringField('Email',
+    username = StringField('Email',
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
+
+# class RegisterForm(FlaskForm):
+#     username = StringField('Email',
+#                         validators=[DataRequired(), Email()])
+#     password = PasswordField('Password', validators=[DataRequired()])
+#     submit = SubmitField('Login')

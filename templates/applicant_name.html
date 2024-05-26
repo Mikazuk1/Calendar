@@ -4,9 +4,9 @@
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="{{url_for( 'applicant_name', applicant = event.applicant ) }}">Applicant: {{ event.applicant }}</a>
-              <p class="article-content text-secondary"><a href="{{ url_for('sched',id = event.id) }}">Event Name: {{ event.event_name }}</a></p>
+              <a class="mr-2" href="{{url_for( 'applicant_name', applicant = event.applicant.applicant) }}">Applicant: {{ event.applicant }}</a>
             </div>
+            <p class="article-content"><a  href="{{ url_for('sched',id = event.id) }}">Event Name: {{ event.event_name }}<a/></p>
             <p class="article-content">Event Start time: {{ event.startdate }}</p>
             <p class="article-content">Event End time: {{ event.enddate }}</p>
           </div>

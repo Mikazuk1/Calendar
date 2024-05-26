@@ -2,9 +2,9 @@
       {% block content %}
       <div class="container">  
         <div class="table-responsive">  
-        <h3 align="center">Create Event</h3><br/>
+        <legend><h3 align="center">{{ legend }}</h3></legend><br/>
         <div class="box">
-        <form method="POST" action="/addevent"> 
+        <form method="POST"> 
           {{form.hidden_tag()}} 
           <div class="form-group">
             {{ form.applicant.label(class="form-control-label") }}
@@ -48,7 +48,7 @@
         <div class="form-group">
           {{ form.startdate.label(class="form-control-label") }}
           {% if form.startdate.errors %}
-              {{ form.startdate(class="form-control form-control-lg is-invalid",type="datetime-local") }}
+              {{ form.startdate(class="form-control form-control-lg is-invalid", type="datetime-local") }}
               <div class="invalid-feedback">
                   {% for error in form.startdate.errors %}
                       <span>{{ error }}</span>
@@ -71,9 +71,6 @@
                 {{ form.enddate(class="form-control form-control-lg",type="datetime-local") }}
             {% endif %}
             </div>
-    
-
-
       <div class="form-group">
         {{ form.submit(class="btn btn-success") }}
       </div>
