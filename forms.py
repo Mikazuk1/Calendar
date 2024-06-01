@@ -1,21 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, DateTimeLocalField
-from wtforms.validators import DataRequired, Email
-
-
-# class ValidDateTime(object):
-#     def __init__(self, message=None):
-#         if not message:
-#             message = 'Invalid datetime format'
-#         self.message = message
-
-#     def __call__(self, form, field):
-#         if not field.data:
-#             raise ValidationError('Date and time must be provided')
-#         try:
-#             datetime.strptime(field.data, '%Y-%m-%dT%H:%M:%S')  # Include seconds in the format
-#         except ValueError:
-#             raise ValidationError(self.message)
+from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 class AddEvent(FlaskForm):
     applicant = StringField('Enter Name', validators=[DataRequired()])
@@ -32,8 +17,12 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-# class RegisterForm(FlaskForm):
-#     username = StringField('Email',
-#                         validators=[DataRequired(), Email()])
-#     password = PasswordField('Password', validators=[DataRequired()])
-#     submit = SubmitField('Login')
+class RegistrationForm(FlaskForm):
+    username = StringField('Username',
+                           validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Sign Up')
