@@ -1,8 +1,10 @@
-from flask import Flask, render_template, url_for, flash, redirect, request
+from flask import Flask, make_response, render_template, send_file, url_for, flash, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from forms import LoginForm, AddEvent, RegistrationForm
 from datetime import datetime
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager, UserMixin
+from io import StringIO
+import csv
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key_here'
@@ -37,7 +39,7 @@ class User(db.Model,UserMixin):
     
     def __repr__(self):
         return f'<Sched {self.id}>'
- 
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -56,15 +58,29 @@ def register():
 @login_required
 def home():
     page = request.args.get('page', 1, type = int)
-    events = Sched.query.order_by(Sched.applicant.desc()).paginate(page = page , per_page = 4)
+    events = Sched.query.order_by(Sched.applicant.asc()).paginate(page = page , per_page = 4)
     return render_template('home.html', title='Home', events=events)
 
 @app.route("/latest")
 @login_required
 def latest():
     page = request.args.get('page', 1, type = int)
-    events = Sched.query.order_by(Sched.applicant.desc()).paginate(page = page , per_page = 4)
+    events = Sched.query.order_by(Sched.time_posted.desc()).paginate(page = page , per_page = 4)
     return render_template('latest.html', title='Home', events=events)
+
+@app.route('/download', methods=['GET'])
+@login_required
+def download():
+    export_columns = ['time_posted', 'applicant', 'event_name','facility','startdate','enddate']
+    si = StringIO()
+    cw = csv.writer(si, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+    cw.writerow(export_columns)
+    for sched in Sched.query.all():
+        cw.writerow([str(getattr(sched, col)) for col in export_columns])
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename = booking_sched.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -88,7 +104,6 @@ def logout():
     return redirect(url_for('login'))
 
 
-
 @app.route("/addevent", methods=['GET','POST'])
 @login_required
 def addevent():
@@ -108,10 +123,12 @@ def addevent():
             return redirect(url_for('home'))
     return render_template("addevent.html", title="Create Event", legend = "Create Schedule" ,form=form)
 
+
 @app.route("/calendar")
 def calendar():
     events = Sched.query.all()
     return render_template("calendar.html", events = events)
+
 
 @app.route("/sched/<int:id>")
 @login_required
@@ -140,6 +157,7 @@ def updatesched(id):
         form.facility.data = event.facility
     return render_template('addevent.html',title="Update Schedule",form=form,legend="Update Schedule")
 
+
 @app.route("/sched/<int:id>/delete", methods=['POST'])
 @login_required
 def delete_sched(id):
@@ -149,6 +167,7 @@ def delete_sched(id):
     flash('Schedule Deleted!','success')
     return redirect(url_for('home'))
 
+
 @app.route("/applicant/<string:applicant>")
 @login_required
 def applicant_name(applicant):
@@ -156,9 +175,9 @@ def applicant_name(applicant):
     events = Sched.query.filter_by( applicant = applicant ).order_by(Sched.startdate.desc()).paginate(page = page , per_page = 4)
     return render_template('applicant_name.html', events=events, applicant=applicant)
 
-    
 
 if __name__ == '__main__':
+    #app.run(host='0.0.0.0',port=5000)
     app.run(debug=True)
 
 

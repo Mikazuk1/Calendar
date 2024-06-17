@@ -3,8 +3,8 @@
     {% for event in events.items %}
         <article class="media content-section">
           <div class="media-body">
+            <h4 class="mr-2" >Applicant: {{ event.applicant }}</h4>
             <div class="article-metadata">
-              <a class="mr-2" href="{{url_for( 'applicant_name', applicant = event.applicant.applicant) }}">Applicant: {{ event.applicant }}</a>
             </div>
             <p class="article-content"><a  href="{{ url_for('sched',id = event.id) }}">Event Name: {{ event.event_name }}<a/></p>
             <p class="article-content">Event Start time: {{ event.startdate }}</p>
