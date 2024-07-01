@@ -3,14 +3,13 @@
       <article class="media content-section">
         <div class="media-body">
           <div class="article-metadata">
-            <h4 class="mr-2"><a href="{{url_for( 'applicant_name', applicant = event.applicant) }}">Applicant: {{ event.applicant }}</a></h4>
+            <h4 class="article-content">Event Name: {{ event.event_name }}</h4>
             <div>
               <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{url_for('updatesched', id=event.id)}}">Update</a>
               <button type="button" class="btn btn-danger btn-sm m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
-            </div>
-            
+            </div>           
           </div>
-          <p class="article-content">Event Name: {{ event.event_name }}</p>
+          <h6 class="mr-2"><a href="{{url_for( 'applicant_name', applicant = event.applicant) }}">Applicant: {{ event.applicant }}</a></h6>
           <p class="article-content">Event Start time: {{ event.startdate }}</p>
           <p class="article-content">Event End time: {{ event.enddate }}</p>
         </div>
